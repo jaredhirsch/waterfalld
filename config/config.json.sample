@@ -11,5 +11,11 @@
   "request_delay": 15000,
 
   "transport_comment": "store the output wherever you want, just specify the filename here and follow the 'transport/couchdb' and 'transport/filesystem' examples",
-  "transport": "couchdb"
+  "transport": "couchdb",
+
+  "cron_comment": "Any string accepted by node-cron. WARNING: node-cron has six fields total (it takes a seconds field), unlike /etc/crontab. The example runs once daily at 11:30:00am.",
+  "cron": "00 30 11 * * *",
+
+  "cronTZ_comment": "Timezone to use when node-cron sets run time. Defaults to UTC.",
+  "cronTZ": "UTC"
 }

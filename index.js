@@ -14,6 +14,7 @@
 //               logger must accept multiple args (or concat them, whatever).
 
 var fs = require('fs'),
+  cronJob = require('cron').CronJob,
   log = process.env['LOG_LIBRARY'] ? require(process.env['LOG_LIBRARY']) : console.log,
   WebPageTest = require('webpagetest'),
   cfgFile = process.env['CONFIG_FILE'] || './config/config.json',
@@ -88,7 +89,9 @@ function onGetHARData(test_id) {
   };
 }
 
-loadTests()
+new cronJob(config.cron, function() {
+  loadTests()
+}, null, true, config.cronTZ);
 
 process.on('uncaughtException', function(err) {
   console.log('ERROR', 'Caught uncaught exception at top level: ' + err);
