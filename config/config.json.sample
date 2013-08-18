@@ -20,5 +20,29 @@
   "cronTZ": "UTC",
 
   "maxRestarts_comment": "Max number of restarts before forever-monitor bails.",
-  "maxRestarts": 3
+  "maxRestarts": 3,
+
+  "mailOptions_comment": "Options used in sending cronmail. Currently mail is only sent when something goes wrong, or the daemon exits after restarting the max number of times.",
+  "mailOptions": {
+    "from_comment": "Name/address of cronmail sender.",
+    "from": "WPT Cronmail <wpt-cronmail@127.0.0.1>",
+
+    "to_comment": "Name/address of cronmail recipient.",
+    "to": "Rootless Root <root@127.0.0.1>",
+
+    "subject_comment": "First portion of Cronmail subject line. Nice to customize if you have multiple copies running and/or like to filter your email.",
+    "subject": "[wpt-cronmail]"
+  },
+
+  "mailService_comment": "Nodemailer transport setup config. Don't set this option if you don't want to send email. See nodemailer for details.",
+  "mailService": {
+    "type_comment": "Service type: nodemailer currently supports SMTP, SES, Sendmail.",
+    "type": "SMTP",
+    
+    "options_comment": "See nodemailer docs for options to pass to different transports.",
+    "options": {
+      "user": "example@gmail.com",
+      "pass": "s3kretsqurl",
+      "name": "Gmail"
+    }
 }
