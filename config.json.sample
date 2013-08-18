@@ -1,0 +1,12 @@
+{
+  "config_comment": "the comment fields are just here so the file can be self-documenting. in your own config files, feel free to omit any fields that end in '_comment'.",
+
+  "apikey_comment": "apikey is assigned by WebPageTest.org's admin or the admin of your private instance.",
+  "apikey": "1234567890asdfghjkl",
+
+  "server_comment": "the url running the WebPageTest API. assumes http, not https",
+  "server": "www.webpagetest.org",
+
+  "request_delay_comment": "delay between API requests. Don't be Scumbag Steve, set this to a reasonable level.",
+  "request_delay": 15000
+}
