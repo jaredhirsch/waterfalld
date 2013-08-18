@@ -5,8 +5,8 @@ var nano = require('nano')(process.env['COUCHDB_URL'] || 'http://localhost:5984'
 module.exports = {
   save: function(doc, id) {
     db.insert(doc, id, function(err,body) {
-      if (err) { log('EMERGENCY', 'unable to insert doc: ' + id); }
-      log('INFO', 'inserted doc into DB: ' + id);
+      (err) ? log('EMERGENCY', 'unable to insert doc: ' + id)
+        : log('INFO', 'inserted doc into DB: ' + id)
     });
   }
 }
