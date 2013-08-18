@@ -23,7 +23,7 @@ var fs = require('fs'),
   urls = loadConfig(urlFile),
   browsers = loadConfig(browserFile),
   pendingTestsQ = [],
-  wpt = new WebPageTest('www.webpagetest.org');
+  wpt = new WebPageTest('www.webpagetest.org', config.apikey);
 
 // TODO surely some library exists that thoughtfully loads a file
 function loadConfig(configFile) {
@@ -45,19 +45,10 @@ function loadConfig(configFile) {
 
 // add urls X browsers onto pending queue.
 function loadTests() {
-  urls.each(function(url) {
-    browsers.each(function(browser) {
-      var args = [
-        url,
-        { key: config.apikey
-          , browser: browser /* eg 'SanJose_IE9' - both location and browser */
-          , firstViewOnly: true /* TODO do we care about warmed cache? */
-          , pollResults: 15 /* poll every 15 sec for results */
-          , timeout: 300 /* give up after 5 minutes */
-        },
-        onRunTest
-      ];
-      log('DEBUG', 'loading onto pendingTestsQ: ' + args);
+  urls.forEach(function(url) {
+    browsers.forEach(function(browser) {
+      var args = [url, {location:browser}, onRunTest];
+      log('DEBUG', 'loading onto pendingTestsQ: url: ' + url + ', browser: ' + browser);
       pendingTestsQ.push(args);
     });
   });
@@ -67,18 +58,21 @@ function loadTests() {
 
 // TODO better name? runTests sounds too much like wpt's runTest.
 function start() {
-  if (!pendingTestsQ.length) { return log('INFO', 'All pending tests have been sent to the wpt server.'); }
-  var next = pendingTestsQ.shift();
-  log('INFO', 'Sending a runTest call to the wpt server: ' + next);
-  wpt.runTest.call(wpt, next);
-  setTimeout(runTests, config.request_delay || 15000);
+  if (pendingTestsQ.length) {
+    var next = pendingTestsQ.shift();
+    log('INFO', 'Sending a runTest call to the wpt server: ' + next[0] + ', ' + JSON.stringify(next[1]) + ', ' + next[2].name);
+    wpt.runTest.apply(wpt, next);
+    setTimeout(start, config.request_delay || 15000);
+  } else {
+    log('INFO', 'All pending tests have been sent to the wpt server.');
+  }
 }
 
 // wpt.runTest callback
 function onRunTest(err, data) {
   if (err) { return log('ERROR', 'failed to run test. error: ' + err); }
-  if (data.response.statusCode != 200) { return log('ERROR', 'non-200 status code in runTest response: ' + data); }
-  var id = data.response.data.testId;
+  if (data.statusCode != 200) { return log('ERROR', 'non-200 status code in runTest response: ' + data); }
+  var id = data.data.testId;
   log('INFO', 'Notified by wpt server that job ' + id + ' has run. Now fetching HAR data.');
   wpt.getHARData(id, onGetHARData(id));
 }
@@ -89,7 +83,7 @@ function onGetHARData(test_id) {
     if (err) { return log('ERROR', 'failed to get HAR data for test ' + test_id + '. error: ' + err); }
     log('INFO', 'HAR data received for test job ' + test_id + '. Now writing to disk.');
     // TODO enable other transports than just writing to local disk.
-    fs.writeFile(test_id + '.har', data, function(err) {
+    fs.writeFile('./harfiles/' + test_id + '.har', data, function(err) {
       if (err) { return log('EMERGENCY', 'unable to write results file for test ' + test_id + '. error: ' + err); }
       log('INFO', 'HAR data written to disk for test job ' + test_id + '.');
     });
@@ -97,3 +91,7 @@ function onGetHARData(test_id) {
 }
 
 loadTests()
+
+process.on('uncaughtException', function(err) {
+  console.log('ERROR', 'Caught uncaught exception at top level: ' + err);
+});
