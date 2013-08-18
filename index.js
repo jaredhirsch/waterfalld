@@ -16,9 +16,9 @@
 var fs = require('fs'),
   log = process.env['LOG_LIBRARY'] ? require(process.env['LOG_LIBRARY']) : console.log,
   WebPageTest = require('webpagetest'),
-  cfgFile = process.env['CONFIG_FILE'] || './config.json',
-  urlFile = process.env['URL_FILE'] || './urls.json',
-  browserFile = process.env['BROWSER_FILE'] || './browsers.json',
+  cfgFile = process.env['CONFIG_FILE'] || './config/config.json',
+  urlFile = process.env['URL_FILE'] || './config/urls.json',
+  browserFile = process.env['BROWSER_FILE'] || './config/browsers.json',
   config = loadConfig(cfgFile);
   urls = loadConfig(urlFile),
   browsers = loadConfig(browserFile),

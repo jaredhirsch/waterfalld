@@ -31,4 +31,3 @@ TODOs:
   * make sure we can handle multiple runs properly
   * tests, dude. wtf.
   * move libs into a /lib folder
-  * move configs into a /config folder
