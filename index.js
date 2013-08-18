@@ -1,3 +1,6 @@
+// TODO you only need CONFIG_FILE and LOG_LIBRARY as process.envs. everything else
+//      could be loaded from the CONFIG_FILE once you've bootstrapped.
+//
 // process envs you can set:
 //
 // CONFIG_FILE = path to config file matching format in config.json.sample.
@@ -13,37 +16,19 @@
 //               as a first argument, then a message as a second argument. Your
 //               logger must accept multiple args (or concat them, whatever).
 
-var fs = require('fs'),
-  cronJob = require('cron').CronJob,
+var cronJob = require('cron').CronJob,
   log = process.env['LOG_LIBRARY'] ? require(process.env['LOG_LIBRARY']) : console.log,
   WebPageTest = require('webpagetest'),
   cfgFile = process.env['CONFIG_FILE'] || './config/config.json',
   urlFile = process.env['URL_FILE'] || './config/urls.json',
   browserFile = process.env['BROWSER_FILE'] || './config/browsers.json',
+  loadConfig = require('./loadConfig'),
   config = loadConfig(cfgFile);
   urls = loadConfig(urlFile),
   browsers = loadConfig(browserFile),
   storage = require('./transport/' + (config.transport || 'filesystem')),
   pendingTestsQ = [],
   wpt = new WebPageTest('www.webpagetest.org', config.apikey);
-
-// TODO surely some library exists that thoughtfully loads a file
-function loadConfig(configFile) {
-  var configFileContents, parsedConfig;
-  try {
-    configFileContents = fs.readFileSync(configFile);
-  } catch (e) {
-    return log('EMERGENCY', 'unable to load config file: ' + e);
-  }
-
-  try {
-    parsedConfig = JSON.parse(configFileContents)
-  } catch (e) {
-    return log('EMERGENCY', 'unable to parse config file: ' + e);
-  }
-
-  return parsedConfig;
-}
 
 // add urls X browsers onto pending queue.
 function loadTests() {

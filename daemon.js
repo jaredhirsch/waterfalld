@@ -1,6 +1,9 @@
 var forever = require('forever-monitor'),
   log = process.env['LOG_LIBRARY'] ? require(process.env['LOG_LIBRARY']) : console.log,
-  maxRestarts = 3; // TODO extract config file code so we can do "config.maxRestarts" here
+  loadConfig = require('./loadConfig'),
+  cfgFile = process.env['CONFIG_FILE'] || './config/config.json',
+  config = loadConfig(cfgFile),
+  maxRestarts = config.maxRestarts;
 
 var child = new (forever.Monitor)('index.js', {
   max: maxRestarts,

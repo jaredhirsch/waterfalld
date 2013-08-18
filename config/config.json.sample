@@ -17,5 +17,8 @@
   "cron": "00 30 11 * * *",
 
   "cronTZ_comment": "Timezone to use when node-cron sets run time. Defaults to UTC.",
-  "cronTZ": "UTC"
+  "cronTZ": "UTC",
+
+  "maxRestarts_comment": "Max number of restarts before forever-monitor bails.",
+  "maxRestarts": 3
 }
