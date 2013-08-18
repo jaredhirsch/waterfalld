@@ -24,6 +24,7 @@ pull requests welcome.
 
 TODOs:
 * big features:
+  * figure out what option to pass to just get the third-party domain load time
   * actually get the data back out of storage & process it (weighted average of load time? run the HAR files through YSlow at command line?)
   * display the data (graphs, tables)
 * code stuffs:
