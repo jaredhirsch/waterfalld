@@ -22,7 +22,6 @@ var fs = require('fs'),
   config = loadConfig(cfgFile);
   urls = loadConfig(urlFile),
   browsers = loadConfig(browserFile),
-  // add your own transport foo at foo.js
   storage = require('./transport/' + (config.transport || 'filesystem')),
   pendingTestsQ = [],
   wpt = new WebPageTest('www.webpagetest.org', config.apikey);
