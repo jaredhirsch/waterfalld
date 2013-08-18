@@ -6,7 +6,7 @@ module.exports = {
   save: function(doc) {
     db.insert(doc, function(err,body) {
       if (err) { log('EMERGENCY', 'unable to insert doc: ' + err); }
-      log('DEBUG', 'inserted doc into DB: ' + body);
+      log('INFO', 'inserted doc into DB: ' + JSON.stringify(body));
     });
   }
 }
