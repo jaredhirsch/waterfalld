@@ -3,10 +3,10 @@ var nano = require('nano')(process.env['COUCHDB_URL'] || 'http://localhost:5984'
   db = nano.use('harfiles');
 
 module.exports = {
-  save: function(doc) {
-    db.insert(doc, function(err,body) {
-      if (err) { log('EMERGENCY', 'unable to insert doc: ' + err); }
-      log('INFO', 'inserted doc into DB: ' + JSON.stringify(body));
+  save: function(doc, id) {
+    db.insert(doc, id, function(err,body) {
+      if (err) { log('EMERGENCY', 'unable to insert doc: ' + id); }
+      log('INFO', 'inserted doc into DB: ' + id);
     });
   }
 }

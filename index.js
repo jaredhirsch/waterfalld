@@ -22,6 +22,8 @@ var fs = require('fs'),
   config = loadConfig(cfgFile);
   urls = loadConfig(urlFile),
   browsers = loadConfig(browserFile),
+  // add your own transport foo at foo.js
+  storage = require('./transport/' + (config.transport || 'filesystem')),
   pendingTestsQ = [],
   wpt = new WebPageTest('www.webpagetest.org', config.apikey);
 
@@ -83,10 +85,7 @@ function onGetHARData(test_id) {
     if (err) { return log('ERROR', 'failed to get HAR data for test ' + test_id + '. error: ' + err); }
     log('INFO', 'HAR data received for test job ' + test_id + '. Now writing to disk.');
     // TODO enable other transports than just writing to local disk.
-    fs.writeFile('./harfiles/' + test_id + '.har', data, function(err) {
-      if (err) { return log('EMERGENCY', 'unable to write results file for test ' + test_id + '. error: ' + err); }
-      log('INFO', 'HAR data written to disk for test job ' + test_id + '.');
-    });
+    storage.save(data, test_id);
   };
 }
 

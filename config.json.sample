@@ -8,5 +8,8 @@
   "server": "www.webpagetest.org",
 
   "request_delay_comment": "delay between API requests. Don't be Scumbag Steve, set this to a reasonable level.",
-  "request_delay": 15000
+  "request_delay": 15000,
+
+  "transport_comment": "store the output wherever you want, just specify the filename here and follow the 'couchdb' and 'filesystem' transport examples",
+  "transport": "couchdb"
 }
