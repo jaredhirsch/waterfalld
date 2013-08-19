@@ -25,6 +25,8 @@ pull requests welcome.
 TODOs:
 * big features:
   * better name wouldnt hurt
+  * rewrite the readme, lots of new stuff to document
+  * add a transport for http (sending to another arbitrary web service)
   * figure out what option to pass to just get the third-party domain load time
   * actually get the data back out of storage & process it (weighted average of load time? run the HAR files through YSlow at command line?)
   * display the data (graphs, tables)
