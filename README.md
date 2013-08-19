@@ -1,12 +1,14 @@
-**w**hiskey **p**apa **t**ango. globally distributed performance monitoring using webpagetest.
+waterfalld: globally distributed performance monitoring using webpagetest.
 
-list of urls/browsers -> webpagetest -> HAR files & other JSON data -> document storage -> metrics yay.
+data flow: list of urls/browsers -> webpagetest -> HAR files & other JSON data -> document storage -> metrics yay.
+
+it's a `node-cron` cronjob daemonized via the lovely `forever-monitor`.
 
 a mozilla persona friday project, provoked by a conversation on [the mailing list](https://groups.google.com/forum/#!msg/mozilla.dev.identity/D59f9m72eyc/_ogjpnrFyZ8J).
 
 Installing:
-* nodejs
-* couchdb, if you want to use the couchdb transport (install couch, then run couch-setup.js to create database).
+* `npm install`
+* if you want to store webpagetest output using couchdb: install couch & run couch-setup.js to create the database
 * if you're using the public webpagetest.org instance, request an api key
 
 Running:
@@ -24,7 +26,6 @@ pull requests welcome.
 
 TODOs:
 * big features:
-  * better name wouldnt hurt
   * rewrite the readme, lots of new stuff to document
   * add a transport for http (sending to another arbitrary web service)
   * figure out what option to pass to just get the third-party domain load time
